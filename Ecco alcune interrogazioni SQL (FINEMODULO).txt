@@ -1,0 +1,99 @@
+Ecco alcune interrogazioni SQL con almeno due tra raggruppamenti e ordinamenti, join e date basate sullo schema di database che hai creato:
+
+    Elencare tutti i prodotti di una determinata categoria ordinati per prezzo crescente:
+
+SELECT p.Nome, p.Prezzo
+FROM Prodotto p
+INNER JOIN Categoria c ON p.CategoriaID = c.CategoriaID
+WHERE c.NomeCategoria = 'Categoria desiderata'
+ORDER BY p.Prezzo ASC;
+
+Calcolare il totale delle vendite per ciascun cliente in un intervallo di date specifico:
+
+SELECT c.Nome, SUM(p.Prezzo) AS TotaleVendite
+FROM Cliente c
+INNER JOIN Ordine o ON c.ClienteID = o.ClienteID
+INNER JOIN ProdottoOrdine po ON o.OrdineID = po.OrdineID
+INNER JOIN Prodotto p ON po.ProdottoID = p.ProdottoID
+WHERE o.DataOrdine BETWEEN 'data_iniziale' AND 'data_finale'
+GROUP BY c.ClienteID, c.Nome
+ORDER BY TotaleVendite DESC;
+
+Trovare il prodotto con la media più alta dei voti delle recensioni:
+
+
+SELECT p.Nome, AVG(r.VotoRecensione) AS MediaVoti
+FROM Prodotto p
+LEFT JOIN Recensione r ON p.ProdottoID = r.ProdottoID
+GROUP BY p.ProdottoID, p.Nome
+ORDER BY MediaVoti DESC;
+
+Elencare il numero di ordini effettuati per ogni categoria di prodotto:
+
+
+SELECT c.NomeCategoria, COUNT(o.OrdineID) AS NumeroOrdini
+FROM Categoria c
+LEFT JOIN Prodotto p ON c.CategoriaID = p.CategoriaID
+LEFT JOIN ProdottoOrdine po ON p.ProdottoID = po.ProdottoID
+LEFT JOIN Ordine o ON po.OrdineID = o.OrdineID
+GROUP BY c.CategoriaID, c.NomeCategoria
+ORDER BY NumeroOrdini DESC;
+
+Trova l'ultimo ordine effettuato da ciascun cliente:
+
+
+SELECT c.Nome AS NomeCliente, MAX(o.DataOrdine) AS UltimoOrdine
+FROM Cliente c
+LEFT JOIN Ordine o ON c.ClienteID = o.ClienteID
+GROUP BY c.ClienteID, c.Nome
+ORDER BY UltimoOrdine DESC;
+
+Calcola la media dei voti delle recensioni per ciascun cliente:
+
+
+SELECT c.Nome AS NomeCliente, AVG(r.VotoRecensione) AS MediaVoti
+FROM Cliente c
+LEFT JOIN Recensione r ON c.ClienteID = r.ClienteID
+GROUP BY c.ClienteID, c.Nome
+ORDER BY MediaVoti DESC;
+
+Elencare i clienti che non hanno ancora effettuato un ordine:
+
+
+SELECT c.Nome AS NomeCliente
+FROM Cliente c
+LEFT JOIN Ordine o ON c.ClienteID = o.ClienteID
+WHERE o.OrdineID IS NULL;
+
+Trovare il totale delle vendite per ogni mese dell'anno corrente:
+
+
+SELECT EXTRACT(MONTH FROM o.DataOrdine) AS Mese, SUM(p.Prezzo) AS TotaleVendite
+FROM Ordine o
+INNER JOIN ProdottoOrdine po ON o.OrdineID = po.OrdineID
+INNER JOIN Prodotto p ON po.ProdottoID = p.ProdottoID
+WHERE EXTRACT(YEAR FROM o.DataOrdine) = EXTRACT(YEAR FROM CURRENT_DATE)
+GROUP BY Mese
+ORDER BY Mese;
+
+Elencare i prodotti senza recensioni:
+
+
+SELECT p.Nome
+FROM Prodotto p
+LEFT JOIN Recensione r ON p.ProdottoID = r.ProdottoID
+WHERE r.RecensioneID IS NULL;
+
+Calcolare il totale delle vendite per ciascuna categoria per un cliente specifico:
+
+
+    SELECT c.NomeCategoria, SUM(p.Prezzo) AS TotaleVendite
+    FROM Categoria c
+    LEFT JOIN Prodotto p ON c.CategoriaID = p.CategoriaID
+    LEFT JOIN ProdottoOrdine po ON p.ProdottoID = po.ProdottoID
+    LEFT JOIN Ordine o ON po.OrdineID = o.OrdineID
+    WHERE o.ClienteID = cliente_specifico
+    GROUP BY c.CategoriaID, c.NomeCategoria
+    ORDER BY TotaleVendite DESC;
+
+ovviamente sostituire 'data_iniziale', 'data_finale', e 'cliente_specifico' con i valori desiderati per le proprie query.

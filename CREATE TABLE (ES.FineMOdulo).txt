@@ -1,0 +1,37 @@
+CREATE TABLE Cliente (
+    ClienteID INT PRIMARY KEY,
+    Nome VARCHAR(255),
+    Email VARCHAR(255),
+    Indirizzo VARCHAR(255)
+);
+
+CREATE TABLE Categoria (
+    CategoriaID INT PRIMARY KEY,
+    NomeCategoria VARCHAR(255)
+);
+
+CREATE TABLE Prodotto (
+    ProdottoID INT PRIMARY KEY,
+    Nome VARCHAR(255),
+    Descrizione TEXT,
+    Prezzo DECIMAL(10, 2),
+    CategoriaID INT,
+    FOREIGN KEY (CategoriaID) REFERENCES Categoria(CategoriaID)
+);
+
+CREATE TABLE Ordine (
+    OrdineID INT PRIMARY KEY,
+    DataOrdine DATE,
+    ClienteID INT,
+    FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
+);
+
+CREATE TABLE Recensione (
+    RecensioneID INT PRIMARY KEY,
+    TestoRecensione TEXT,
+    VotoRecensione INT,
+    ProdottoID INT,
+    ClienteID INT,
+    FOREIGN KEY (ProdottoID) REFERENCES Prodotto(ProdottoID),
+    FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
+);

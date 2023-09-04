@@ -1,0 +1,128 @@
+Caso di Studio: E-commerce di Prodotti Cosmetici
+
+    Descrizione del Caso di Studio:
+
+    Immaginiamo un e-commerce che vende prodotti cosmetici come trucchi, creme per il viso, profumi, ecc. Questo e-commerce ha clienti che effettuano acquisti, diversi prodotti in vendita, categorie di prodotti e recensioni dei clienti.
+
+    Modello ER (Entità-Relazione):
+
+        Entità Cliente:
+            ClienteID (Chiave Primaria)
+            Nome
+            Email
+            Indirizzo
+
+        Entità Prodotto:
+            ProdottoID (Chiave Primaria)
+            Nome
+            Descrizione
+            Prezzo
+            CategoriaID (Chiave Esterna riferita all'entità Categoria)
+
+        Entità Categoria:
+            CategoriaID (Chiave Primaria)
+            NomeCategoria
+
+        Entità Ordine:
+            OrdineID (Chiave Primaria)
+            DataOrdine
+            ClienteID (Chiave Esterna riferita all'entità Cliente)
+
+        Entità Recensione:
+            RecensioneID (Chiave Primaria)
+            TestoRecensione
+            VotoRecensione
+            ProdottoID (Chiave Esterna riferita all'entità Prodotto)
+            ClienteID (Chiave Esterna riferita all'entità Cliente)
+
+    Modello Logico:
+
+        TABELLA Cliente
+            ClienteID (PK)
+            Nome
+            Email
+            Indirizzo
+
+        TABELLA Categoria
+            CategoriaID (PK)
+            NomeCategoria
+
+        TABELLA Prodotto
+            ProdottoID (PK)
+            Nome
+            Descrizione
+            Prezzo
+            CategoriaID (FK)
+
+        TABELLA Ordine
+            OrdineID (PK)
+            DataOrdine
+            ClienteID (FK)
+
+        TABELLA Recensione
+            RecensioneID (PK)
+            TestoRecensione
+            VotoRecensione
+            ProdottoID (FK)
+            ClienteID (FK)
+
+    Progettazione Fisica:
+
+    Ecco il codice SQL DDL (Data Definition Language) per creare le tabelle:
+
+    sql
+
+CREATE TABLE Cliente (
+    ClienteID INT PRIMARY KEY,
+    Nome VARCHAR(255),
+    Email VARCHAR(255),
+    Indirizzo VARCHAR(255)
+);
+
+CREATE TABLE Categoria (
+    CategoriaID INT PRIMARY KEY,
+    NomeCategoria VARCHAR(255)
+);
+
+CREATE TABLE Prodotto (
+    ProdottoID INT PRIMARY KEY,
+    Nome VARCHAR(255),
+    Descrizione TEXT,
+    Prezzo DECIMAL(10, 2),
+    CategoriaID INT,
+    FOREIGN KEY (CategoriaID) REFERENCES Categoria(CategoriaID)
+);
+
+CREATE TABLE Ordine (
+    OrdineID INT PRIMARY KEY,
+    DataOrdine DATE,
+    ClienteID INT,
+    FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
+);
+
+CREATE TABLE Recensione (
+    RecensioneID INT PRIMARY KEY,
+    TestoRecensione TEXT,
+    VotoRecensione INT,
+    ProdottoID INT,
+    ClienteID INT,
+    FOREIGN KEY (ProdottoID) REFERENCES Prodotto(ProdottoID),
+    FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
+);
+
+Questi comandi creeranno le tabelle nel database.
+
+Interrogazioni SQL:
+
+Di seguito sono elencate alcune interrogazioni SQL comuni:
+
+    Elencare tutti i prodotti di una determinata categoria.
+    Trovare i clienti che hanno effettuato più di un ordine.
+    Calcolare il totale delle vendite per un determinato periodo di tempo.
+    Trovare i prodotti con il punteggio di recensione medio più alto.
+    Trovare l'ultimo ordine effettuato da ciascun cliente.
+    Trovare i prodotti più costosi in ciascuna categoria.
+    Trovare il cliente che ha effettuato il maggior numero di recensioni.
+    Calcolare il totale delle vendite per categoria.
+    Trovare i prodotti senza recensioni.
+    Trovare i clienti che non hanno ancora effettuato un ordine.
