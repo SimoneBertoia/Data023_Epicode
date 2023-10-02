@@ -1,0 +1,25 @@
+import matplotlib.pyplot as plt
+from plotly import express as px
+
+# Carica il dataset "stocks" utilizzando Plotly Express
+stocks = px.data.stocks()
+
+# Estrai le prime 20 righe della colonna 'AAPL'
+aapl_data = stocks['AAPL'].head(20)
+
+# Estrai le prime 20 righe della colonna 'date'
+dates = stocks['date'].head(20)
+
+# Imposta lo stile del grafico secondo le specifiche
+plt.figure(figsize=(10, 5))
+plt.plot(dates, aapl_data, marker='o', linestyle='--', color='red', markersize=6, markerfacecolor='black', linewidth=2)
+
+# Imposta i nomi degli assi e il titolo del grafico
+plt.xlabel('Data')
+plt.ylabel('Valore')
+plt.title('Azioni Apple')
+
+# Visualizza il grafico
+plt.grid(True)
+plt.show()
+

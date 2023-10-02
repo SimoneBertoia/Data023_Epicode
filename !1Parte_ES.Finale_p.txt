@@ -1,0 +1,30 @@
+from plotly import express as px
+import matplotlib.pyplot as plt
+
+stocks = px.data.stocks()
+goog_data = stocks['GOOG']
+
+first_5 = goog_data.head(5)
+dates_first_5 = stocks['date'].head(5)
+
+plt.figure(figsize=(10, 5))
+plt.plot(dates_first_5, first_5, marker='o', linestyle='-')
+plt.title('Andamento delle azioni di Google (prime 5 righe)')
+plt.xlabel('Data')
+plt.ylabel('Valore delle azioni GOOG')
+plt.grid(True)
+plt.xticks(rotation=45)
+plt.show()
+
+last_5 = goog_data.tail(5)
+dates_last_5 = stocks['date'].tail(5)
+
+plt.figure(figsize=(10, 5))
+plt.plot(dates_last_5, last_5, marker='o', linestyle='-')
+plt.title('Andamento delle azioni di Google (ultime 5 righe)')
+plt.xlabel('Data')
+plt.ylabel('Valore delle azioni GOOG')
+plt.grid(True)
+plt.xticks(rotation=45)
+plt.show()
+
