@@ -1,0 +1,37 @@
+import pandas as pd
+
+df = pd.read_csv("owid-covid-data.csv")
+
+print("Dimensioni del dataset:", df.shape)
+print("Intestazione del dataset:", df.columns)
+
+
+df = df.dropna(subset=["continent"])
+
+total_cases_per_continent = df.groupby("continent")["total_cases"].sum()
+
+
+def confronta_continenti(dataset, continente1, continente2):
+    stats1 = dataset[dataset["continent"] == continente1]["total_cases"].describe()
+    stats2 = dataset[dataset["continent"] == continente2]["total_cases"].describe()
+    global_stats = dataset["total_cases"].describe()
+    
+    percentuale1 = (stats1["mean"] / global_stats["mean"]) * 100
+    percentuale2 = (stats2["mean"] / global_stats["mean"]) * 100
+    
+    confronto = {
+        "Minimo": [stats1["min"], stats2["min"]],
+        "Massimo": [stats1["max"], stats2["max"]],
+        "Media": [stats1["mean"], stats2["mean"]],
+        "Percentuale del totale mondiale": [percentuale1, percentuale2]
+    }
+    
+    return pd.DataFrame(confronto, index=[continente1, continente2])
+
+
+risultato_casi = confronta_continenti(df, "Europe", "South America")
+risultato_casi = confronta_continenti(risultato_casi, "Europe", "Oceania")
+
+
+Analizzando i dati raccolti sulla diffusione del COVID-19, emerge che l'Europa ha il numero più elevato di casi totali, con una percentuale significativa rispetto al totale mondiale.Il Sud America segue con un numero elevato, ma inferiore all'Europa.L'Oceania presenta il minor numero di casi, con una percentuale molto bassa rispetto al totale mondiale. Per quanto riguarda le vaccinazioni, l'Europa ha somministrato il maggior numero di dosi, mentre il Sud America e l'Oceania hanno una copertura vaccinale inferiore.Possiamo quindi affermare che questi dati evidenziano notevoli differenze nella gestione della pandemia tra i vari continenti.
+
